@@ -15,6 +15,7 @@ User stories:
 Example:
 {{{
 suite name {
+  TAG: empty { }
   TAG: tag1 {
     PRE: All test cases that have this tag will also have this precondition
   }
