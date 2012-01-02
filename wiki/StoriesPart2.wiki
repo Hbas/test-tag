@@ -64,11 +64,11 @@ suite name {
     AFTER: Click on logout => The system closes the window
   }
 
-  TAG: check name{
+  TAG: check name {
     AFTER: Click on "Home" => The system returns to the initial screen
   }
 
-  TAG: open the menu{
+  TAG: open the menu {
     BEFORE: Open the menu => The system displays the requested screen
   }
 
