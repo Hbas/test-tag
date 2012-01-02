@@ -3,7 +3,7 @@
 
 = Introduction =
 
-This page describes the TestTag language. It begins with an overview of the language and follows with a 3 part tutorial, containing some increasing complex examples.
+This page describes the TestTag language. It begins with an overview of the language and follows with the user stories that guided the compiler development, containing some increasing complex examples.
 
 = Language Overview =
 
@@ -14,15 +14,17 @@ The language was created with this things in mind:
   * *You need a suite*: All test cases should be part of a test suite. Period.
 ----
 = Part 1: Getting started =
-In this section we will show how to write your first test cases using our language. All examples compile with no errors.
+In this section we will show the first user stories, that describes how to write your first test cases using our language. All examples compile with no errors.
 
 == A "hello world" suite ==
 
-All test cases:
-  * Must have a name
-  * Must be in a suite
-  * Must have at least one step and it´s expected result
+User stories:
+  * A test suite must have a name
+  * A test case must have a name
+  * A test case must be in a suite
+  * A test case must have at least one step and it´s expected result
 
+Example:
 {{{
 suite name {
   test case name {
@@ -35,16 +37,13 @@ suite name {
 
 == More steps ==
 
-A test suite:
-  * Can have more than one test case
+User stories:
+  * A test suite can have more than one test case
+  * A test case can have more than one step
+  * A test step can have more than one line
+  * A test step must have a single line expected result
 
-A test case:
-  * Can have more than one step
-
-A test step:
-  * Can have more than one line
-  * Must have a single line expected result
-
+Example:
 {{{
 suite {
   test 1 {
@@ -65,8 +64,8 @@ suite {
 
 == Test description ==
 
-A test case:
-    * Can have a test description
+User stories:
+  * A test case can have a test description
 
 {{{
 suite name {
@@ -79,8 +78,8 @@ suite name {
 
 == Preconditions ==
 
-A test case:
-    * Can have one or more preconditions
+User stories:
+  * A test case can have one or more preconditions
 
 {{{
 suite name {
