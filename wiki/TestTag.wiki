@@ -85,7 +85,7 @@ A test case:
 {{{
 suite name {
   test case name {
-    PRE: Begin one or more line with "PRE:" and you can type a single line test precondition
+    PRE: Begin a line with "PRE:" and you can type a single line test precondition
     PRE: You can put more than one precondition on a test case
     A sample step => The expected result
   }
