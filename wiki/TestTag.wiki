@@ -3,19 +3,31 @@
 
 = Introduction =
 
-This page describes the TestTag language. It begins with an overview of the language and some increasing complex examples that can be used as a tutorial.
+This page describes the TestTag language. It begins with an overview of the language and follows with a 3 part tutorial, containing some increasing complex examples.
 
 = Language Overview =
 
+The language was created with this things in mind:
+  * *Avoid verbosity*: Test cases are really simple structures, so why fill the language with boilerplate syntax? We have curly braces and an "arrow"  (i.e. => ) as the main language elements.
+  * *Based on Testlink, not restricted to*: The language was created to be used with Testlink but is not restricted to it. The language will be compiled/exported to other programs/formats in the future.
+  * *Let the text editor help you*: The syntax/usage tips should be created to use the full power of the modern text editors, facilitating operations like _find and replace_ (with or without regular expressions), _column editing_, _syntax highlighting_ and _syntax folding_.
+  * *You need a suite*: All test cases should be part of a test suite. Period.
+----
 = Part 1: Getting started =
-== An empty suite (test file) ==
-== A simple test case ==
-== Test objective ==
+In this section we will show how to write your first test cases using our language
+
+== A "hello world" suite ==
+== More steps ==
+== Test objectives ==
 == Preconditions ==
-
+== Tips and tricks ==
+----
 = Part 2: Reuse =
-== Using tags ==
+In this section we will show how to use "tags" (or labels) to reuse steps and preconditions
 
-= Part 3: Advanced topics =
+== Tags ==
+== Tips on tags ==
+----
+= Part 3: Other topics =
 == Comments ==
 == A multi-file suite ==
