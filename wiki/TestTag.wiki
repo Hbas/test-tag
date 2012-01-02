@@ -14,13 +14,87 @@ The language was created with this things in mind:
   * *You need a suite*: All test cases should be part of a test suite. Period.
 ----
 = Part 1: Getting started =
-In this section we will show how to write your first test cases using our language
+In this section we will show how to write your first test cases using our language. All examples compile with no errors.
 
 == A "hello world" suite ==
+
+All test cases:
+  * Must have a name
+  * Must be in a suite
+  * Must have at least one step and it´s expected result
+
+{{{
+suite name {
+  test case name {
+    A sample step => The expected result
+  }
+}
+}}}
+
+
+
 == More steps ==
-== Test objectives ==
+
+A test suite:
+  * Can have more than one test case
+
+A test case:
+  * Can have more than one step
+
+A test step:
+  * Can have more than one line
+  * Must have a single line expected result
+
+{{{
+suite {
+  test 1 {
+    Press enter after the result => The compiler will wait for the next step or a closing bracket
+    Type something => It will be the second step
+  }
+
+  test 2 {
+    A multi-line step can be created
+    Just press enter => The step will have a line break on it
+  }
+
+  test 3 {
+    You cant create a two line expected result => As the following line is treated as a new step
+  }
+}
+}}}
+
+== Test description ==
+
+A test case:
+    * Can have a test description
+
+{{{
+suite name {
+  test case name {
+    DESCRIPTION: Begin a line with "DESCRIPTION:" and you can type a single line test description
+    A sample step => The expected result
+  }
+}
+}}}
+
 == Preconditions ==
+
+A test case:
+    * Can have one or more preconditions
+
+{{{
+suite name {
+  test case name {
+    PRE: Begin one or more line with "PRE:" and you can type a single line test precondition
+    PRE: You can put more than one precondition on a test case
+    A sample step => The expected result
+  }
+}
+}}}
+
 == Tips and tricks ==
+To be written
+
 ----
 = Part 2: Reuse =
 In this section we will show how to use "tags" (or labels) to reuse steps and preconditions
