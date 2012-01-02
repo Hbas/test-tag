@@ -1,5 +1,5 @@
 #summary User Stories Part 2: Tags and reuse
-= User Stories Part 2: Tags and reuse (NOT IMPLEMENTED YET) =
+= User Stories Part 2: Tags (NOT IMPLEMENTED YET) =
 In this section we will show how to use "tags" (or labels) to reuse steps and preconditions
 
 == Defining a tag ==
