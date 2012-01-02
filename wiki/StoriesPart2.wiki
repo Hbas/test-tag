@@ -9,17 +9,6 @@ User stories:
   * A tag can be inside a suite
   * A tag can have preconditions
   * A tag don´t need to have steps
-
-{{{
-suite name {
-  TAG: sample tag {
-    PRE: All test cases that have this tag will also have this precondition
-  }
-}
-}}}
-
-== Using a tag ==
-User stories:
   * A test case can have zero or more tags
   * A tag can have zero or more tags
 
