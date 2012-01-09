@@ -18,7 +18,8 @@ using System.Xml;
 using System.Web;
 using System.Net;
 using System.Security;
-namespace TestTag.Models
+
+namespace TestTag
 {
     public abstract class XmlNode
     {

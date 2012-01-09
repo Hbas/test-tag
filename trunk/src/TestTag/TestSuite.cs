@@ -15,18 +15,21 @@
 //
 using System.Collections.Generic;
 using System.Xml;
+using System.Linq;
 
-namespace TestTag.Models
+namespace TestTag
 {
     public class TestSuite : XmlNode
     {
         public string Name { get; private set; }
         public List<TestCase> TestCases { get; private set; }
+        public List<TstTag> Tags { get; private set; }
 
         public TestSuite(string name)
         {
             Name = name;
             TestCases = new List<TestCase>();
+            Tags = new List<TstTag>();
         }
 
         public override void AppendXml(XmlWriter writer)
@@ -40,6 +43,25 @@ namespace TestTag.Models
                 tc.AppendXml(writer);
             }
             writer.WriteEndElement();
+        }      
+
+        public void AddTestCase(TestCase tc)
+        {
+            foreach (string tag in tc.Tags)
+            {
+                TstTag tstTag = Tags.Where(x => x.Name == tag).FirstOrDefault();
+                if (tstTag == null)
+                {
+                    throw new TagNotFoundException(tc.Name,tag);
+                }
+                tstTag.ApplyTo(tc);
+            }
+            TestCases.Add(tc);
+        }
+
+        public void AddTag(TstTag tag)
+        {
+            Tags.Add(tag);
         }
     }
 }

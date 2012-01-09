@@ -18,7 +18,7 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using TestTag.Models;
+using TestTag;
 
 namespace TestTagTest
 {

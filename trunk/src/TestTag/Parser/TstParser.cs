@@ -17,10 +17,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using TestTag.Models;
+using TestTag;
 
 namespace TestTag.Parser
 {
+    //TODO: Refactor
     public class TstParser
     {
         private TestPlan testPlan = new TestPlan();
@@ -32,17 +33,25 @@ namespace TestTag.Parser
             {
                 return testPlan;
             }
-        }       
+        }
 
         public void Parse(TstTokenizer tokenizer)
         {
             this.tokens = tokenizer;
             TestSuite suite = new TestSuite(ConsumeString());
             Consume(TstToken.OPEN_BRACKET);
-            while (tokens.Peek().Type != TstTokenType.CLOSE_BRACKET)
+            while (!NextTokenTypeIs(TstTokenType.CLOSE_BRACKET))
             {
                 RemoveLineBreaks();
-                ConsumeTestCase(suite);
+                if (NextTokenTypeIs(TstTokenType.TAG))
+                {
+                    tokens.Next();
+                    ConsumeTag(suite);
+                }
+                else
+                {
+                    ConsumeTestCase(suite);
+                }
                 RemoveLineBreaks();
             }
             Consume(TstToken.CLOSE_BRACKET);
@@ -54,36 +63,95 @@ namespace TestTag.Parser
             testPlan.Add(suite);
         }
 
-        private void ConsumeTestCase(TestSuite suite)
+        private void ConsumeTag(TestSuite suite)
         {
-            TestCase tc = new TestCase(ConsumeString());
+            TstTag tag = new TstTag(ConsumeStringWithoutSpecialChars());
             Consume(TstToken.OPEN_BRACKET);
-            while (tokens.Peek().Type != TstTokenType.CLOSE_BRACKET)
+            while (!NextTokenTypeIs(TstTokenType.CLOSE_BRACKET))
             {
                 RemoveLineBreaks();
-                if (tokens.Peek().Type == TstTokenType.TEST_SUMMARY)
+                if (NextTokenTypeIs(TstTokenType.TEST_PRECONDITION))
+                {
+                    tokens.Next();
+                    tag.Preconditions.Add(ConsumeString());
+                }
+                else if (NextTokenTypeIs(TstTokenType.AFTER_STEP))
+                {
+                    tokens.Next();
+                    tag.AfterSteps.Add(ConsumeStep());
+                }
+                else
+                {
+                    Consume(TstToken.BEFORE);
+                    tag.BeforeSteps.Add(ConsumeStep());
+                }
+                if (!NextTokenTypeIs(TstTokenType.CLOSE_BRACKET))
+                {
+                    Consume(TstToken.LINE_BREAK);
+                }
+            }
+            Consume(TstToken.CLOSE_BRACKET);
+            suite.AddTag(tag);
+        }
+
+        private bool NextTokenTypeIs(TstTokenType type)
+        {
+            return tokens.Peek().Type == type;
+        }
+
+        private void ConsumeTestCase(TestSuite suite)
+        {
+            TestCase tc = new TestCase(ConsumeStringWithoutSpecialChars());
+            if (NextTokenTypeIs(TstTokenType.OPEN_PARENTHESIS))
+            {
+                AddTags(tc);
+            }
+            Consume(TstToken.OPEN_BRACKET);
+            while (!NextTokenTypeIs(TstTokenType.CLOSE_BRACKET))
+            {
+                RemoveLineBreaks();
+                if (NextTokenTypeIs(TstTokenType.TEST_SUMMARY))
                 {
                     tokens.Next();
                     tc.Summary = ConsumeString();
                 }
-                else if (tokens.Peek().Type == TstTokenType.TEST_PRECONDITION)
+                else if (NextTokenTypeIs(TstTokenType.TEST_PRECONDITION))
                 {
                     tokens.Next();
                     tc.Preconditions.Add(ConsumeString());
                 }
                 else
                 {
-                    string action = ConsumeStringWithLines();
-                    Consume(TstToken.STEP_SEPARATOR);
-                    tc.AddStep(action, ConsumeString());
+                    tc.Steps.Add(ConsumeStep());
                 }
-                if (tokens.Peek().Type != TstTokenType.CLOSE_BRACKET)
+                if (!NextTokenTypeIs(TstTokenType.CLOSE_BRACKET))
                 {
                     Consume(TstToken.LINE_BREAK);
                 }
             }
             Consume(TstToken.CLOSE_BRACKET);
-            suite.TestCases.Add(tc);
+            suite.AddTestCase(tc);
+        }
+
+        private TestStep ConsumeStep()
+        {
+            string action = ConsumeStringWithLines();
+            Consume(TstToken.STEP_SEPARATOR);
+            return new TestStep(action, ConsumeString());
+        }
+
+        private void AddTags(TestCase tc)
+        {
+            Consume(TstToken.OPEN_PARENTHESIS);
+            while (!NextTokenTypeIs(TstTokenType.CLOSE_PARENTHESIS))
+            {
+                tc.Tags.Add(ConsumeStringWithoutSpecialChars());
+                if (!NextTokenTypeIs(TstTokenType.CLOSE_PARENTHESIS))
+                {
+                    Consume(TstToken.COMMA);
+                }
+            }
+            Consume(TstToken.CLOSE_PARENTHESIS);
         }
 
         private void RemoveLineBreaks()
@@ -105,15 +173,21 @@ namespace TestTag.Parser
 
         private string ConsumeString()
         {
-            return ConsumeString(false);
+            return ConsumeString(false, true);
+        }
+
+        private string ConsumeStringWithoutSpecialChars()
+        {
+            return ConsumeString(false, false);
         }
 
         private string ConsumeStringWithLines()
         {
-            return ConsumeString(true);
+            return ConsumeString(true, true);
         }
 
-        private string ConsumeString(bool withLineBreaks)
+        //TODO Refactor
+        private string ConsumeString(bool withLineBreaks, bool withComma)
         {
             TstToken token = tokens.Next();
             if (token.Type != TstTokenType.TEXT)
@@ -122,10 +196,16 @@ namespace TestTag.Parser
             }
 
             TstToken peek = tokens.Peek();
-            while (peek.Type == TstTokenType.TEXT || (peek.Type == TstTokenType.LINE_BREAK && withLineBreaks))
+            while (peek.Type == TstTokenType.TEXT ||
+                ((peek.Type == TstTokenType.COMMA || peek.Type == TstTokenType.OPEN_PARENTHESIS || peek.Type == TstTokenType.CLOSE_PARENTHESIS) && withComma) ||
+                (peek.Type == TstTokenType.LINE_BREAK && withLineBreaks))
             {
                 TstToken token2 = tokens.Next();
-                token.Content += " " + token2.Content;
+                if (token2.Type == TstTokenType.TEXT)
+                {
+                    token.Content += " ";
+                }
+                token.Content += token2.Content;
                 peek = tokens.Peek();
             }
             return token.Content;

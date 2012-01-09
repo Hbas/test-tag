@@ -13,32 +13,33 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Xml;
 
 namespace TestTag
 {
-    public class TestStep : XmlNode
+    public class TstTag
     {
-        public int StepNumber { get; set; }
-        public string Action { get; set; }
-        public string ExpectedResult { get; set; }
+        public string Name { get; set; }
+        public List<string> Preconditions { get; private set; }
+        public List<TestStep> BeforeSteps = new List<TestStep>();
+        public List<TestStep> AfterSteps = new List<TestStep>();
 
-        public override void AppendXml(XmlWriter writer)
+        public TstTag(string name)
         {
-            writer.WriteStartElement("step");
-            writer.WriteCdataElement("step_number", StepNumber);
-            writer.WriteParagraph("actions", Action);
-            writer.WriteParagraph("expectedresults", ExpectedResult);
-            writer.WriteCdataElement("execution_type", 1);
-            writer.WriteEndElement();
+            this.Name = name;
+            Preconditions = new List<string>();
         }
 
-        public TestStep() { }
-
-        public TestStep(string action, string expectedResult)
+      
+        public void ApplyTo(TestCase tc)
         {
-            this.Action = action;
-            this.ExpectedResult = expectedResult;
+            tc.Preconditions.AddRange(Preconditions);
+            tc.Steps.InsertRange(0, BeforeSteps);
+            tc.Steps.AddRange(AfterSteps);
         }
     }
 }

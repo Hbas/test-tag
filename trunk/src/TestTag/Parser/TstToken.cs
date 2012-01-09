@@ -25,9 +25,14 @@ namespace TestTag.Parser
 
         public static TstToken LINE_BREAK = new TstToken("\n", "a line break", TstTokenType.LINE_BREAK);
         public static TstToken EMPTY = new TstToken("", "the end of file", TstTokenType.EMPTY);
-        public static TstToken OPEN_BRACKET = new TstToken("{",0);
-        public static TstToken CLOSE_BRACKET = new TstToken("}", 0);
-        public static TstToken STEP_SEPARATOR = new TstToken("=>", 0);
+        public static TstToken OPEN_BRACKET = new TstToken("{");
+        public static TstToken CLOSE_BRACKET = new TstToken("}");
+        public static TstToken OPEN_PARENTHESIS = new TstToken("(");
+        public static TstToken CLOSE_PARENTHESIS = new TstToken(")");
+
+        public static TstToken STEP_SEPARATOR = new TstToken("=>");
+        public static TstToken BEFORE = new TstToken("BEFORE:");
+        public static TstToken COMMA = new TstToken(",");
 
         public static TstToken LineBreak(int lineNumber)
         {
@@ -48,6 +53,10 @@ namespace TestTag.Parser
             Type = type;
         }
 
+        private TstToken(string token)
+            : this(token, 0)
+        { }
+
         public TstToken(string token, int currentLine)
         {
             this.Content = token.Trim();
@@ -61,6 +70,15 @@ namespace TestTag.Parser
                 case "}":
                     this.Type = TstTokenType.CLOSE_BRACKET;
                     break;
+                case "(":
+                    this.Type = TstTokenType.OPEN_PARENTHESIS;
+                    break;
+                case ")":
+                    this.Type = TstTokenType.CLOSE_PARENTHESIS;
+                    break;
+                case ",":
+                    this.Type = TstTokenType.COMMA;
+                    break;
                 case "=>":
                     this.Type = TstTokenType.STEP_SEPARATOR;
                     break;
@@ -70,15 +88,27 @@ namespace TestTag.Parser
                 case "PRE:":
                     this.Type = TstTokenType.TEST_PRECONDITION;
                     break;
+                case "TAG:":
+                    this.Type = TstTokenType.TAG;
+                    break;
+                case "BEFORE:":
+                    this.Type = TstTokenType.BEFORE_STEP;
+                    break;
+                case "AFTER:":
+                    this.Type = TstTokenType.AFTER_STEP;
+                    break;
                 default:
                     this.Type = TstTokenType.TEXT;
                     break;
             }
         }
 
+        public override string ToString()
+        {
+            return Content + "(" + Type + ")";
+        }
 
 
-     
     }
 
     public enum TstTokenType
@@ -90,6 +120,12 @@ namespace TestTag.Parser
         LINE_BREAK,
         EMPTY,
         TEST_SUMMARY,
-        TEST_PRECONDITION
+        TEST_PRECONDITION,
+        TAG,
+        BEFORE_STEP,
+        AFTER_STEP,
+        CLOSE_PARENTHESIS,
+        OPEN_PARENTHESIS,
+        COMMA
     }
 }
