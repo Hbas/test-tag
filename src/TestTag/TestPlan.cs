@@ -19,7 +19,7 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 
-namespace TestTag.Models
+namespace TestTag
 {
     public class TestPlan : XmlNode
     {

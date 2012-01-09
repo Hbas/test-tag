@@ -15,3 +15,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 You should have received a copy of the source code along with this binary.  
 If not, see <http://code.google.com/p/test-tag/>.
+=============================
+USAGE:
+
+1. Install the TestTag compiler
+2. Copy the executable file (TestTag.exe) to the directory with your test cases ("*.tst" files)
+3. Run the compiler. It will process all "tst" files and create a "tests.xml" output
+4. Import the "tests.xml" as the root (blank) suite in TestLink
+
+============================
+

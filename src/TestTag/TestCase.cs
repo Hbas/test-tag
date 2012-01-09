@@ -18,7 +18,7 @@ using System.Collections.Generic;
 using System.Xml;
 using System.Text;
 
-namespace TestTag.Models
+namespace TestTag
 {
     public class TestCase : XmlNode
     {
@@ -28,6 +28,7 @@ namespace TestTag.Models
         public string Summary { get; set; }
 
         public List<string> Preconditions { get; private set; }
+        public List<string> Tags { get; private set; }
         public List<TestStep> Steps { get; private set; }
 
 
@@ -40,6 +41,7 @@ namespace TestTag.Models
         public TestCase()
         {
             Preconditions = new List<string>();
+            Tags = new List<string>();
             Steps = new List<TestStep>();
             Order = 100;
         }
@@ -78,14 +80,6 @@ namespace TestTag.Models
                 return sb.ToString();
             }
         }
-
-        public void AddStep(string action, string expectedResult)
-        {
-            Steps.Add(new TestStep()
-            {
-                Action = action,
-                ExpectedResult = expectedResult
-            });
-        }
+       
     }
 }

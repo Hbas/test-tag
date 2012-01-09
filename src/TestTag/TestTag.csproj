@@ -58,16 +58,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Parser\UnexpectedTokenException.cs" />
     <Compile Include="Parser\TstParser.cs" />
     <Compile Include="Parser\TstToken.cs" />
     <Compile Include="Parser\TstTokenizer.cs" />
-    <Compile Include="Parser\UnexpectedTokenException.cs" />
+    <Compile Include="TagNotFoundException.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestCase.cs" />
     <Compile Include="TestPlan.cs" />
     <Compile Include="TestStep.cs" />
     <Compile Include="TestSuite.cs" />
+    <Compile Include="TstTag.cs" />
     <Compile Include="XmlNode.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -19,12 +19,12 @@ using System.Linq;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TestTag.Parser;
-using TestTag.Models;
+using TestTag;
 
 namespace TestTagTests
 {
     [TestClass]
-    public class TstParserTest
+    public class ParserIntegrationTest
     {
         private TstParser parser;
 
@@ -71,6 +71,15 @@ namespace TestTagTests
         #endregion
 
         [TestMethod]
+        public void WithNoSteps()
+        {
+            string tst = "suite { testcase {  } }";
+            parser.Parse(TstTokenizer.FromContent(tst));
+            Assert.AreEqual(1, TestCases.Count);
+            Assert.AreEqual(0, TestCase.Steps.Count);
+        }
+
+        [TestMethod]
         public void WithOneStep()
         {
             string tst = "suite { testcase { asd => bcd } }";
@@ -91,7 +100,7 @@ namespace TestTagTests
             parser.Parse(TstTokenizer.FromContent(tst));
             Assert.AreEqual(1, TestCases.Count);
             Assert.AreEqual(1, TestCase.Steps.Count);
-            Assert.AreEqual("asd \n Xyz", Step.Action);
+            Assert.AreEqual("asd\n Xyz", Step.Action);
             Assert.AreEqual("bcd", Step.ExpectedResult);
         }
 
@@ -122,11 +131,82 @@ namespace TestTagTests
         }
 
         [TestMethod]
-        public void TwoTestCases()
+        public void TwoTestCasesWithEmptyLines()
         {
             string tst = "SuiteName { \n testcase {\n a1 => b1\n\n a2 => c3 } \n\n testcase2 { a2 => b2 } }";
             parser.Parse(TstTokenizer.FromContent(tst));
             Assert.AreEqual(2, TestCases.Count);
+        }
+
+        [TestMethod]
+        public void WithComments()
+        {
+            string tst = "suite { \n //A nice coment\n testcase { \n //Another one \n asd => bcd } }";
+            parser.Parse(TstTokenizer.FromContent(tst));
+            Assert.AreEqual(1, parser.TestPlan.Suites.Count);
+            Assert.AreEqual("suite", Suite.Name);
+            Assert.AreEqual(1, TestCases.Count);
+
+            Assert.AreEqual(1, TestCase.Steps.Count);
+            Assert.AreEqual("asd", TestCase.Steps[0].Action);
+            Assert.AreEqual("bcd", TestCase.Steps[0].ExpectedResult);
+        }
+
+
+        [TestMethod]
+        public void SimpleTag()
+        {
+            string tst = "SuiteName { \n TAG: simple {\n PRE: precond\n } testcase (simple) { a1 => b1 } }";
+            parser.Parse(TstTokenizer.FromContent(tst));
+            Assert.AreEqual(1, TestCases.Count);
+            Assert.AreEqual(1, TestCase.Preconditions.Count);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(TagNotFoundException))]
+        public void TagNotFound()
+        {
+            string tst = "SuiteName { \n testcase (tag) { a1 => b1 } }";
+            parser.Parse(TstTokenizer.FromContent(tst));
+        }
+
+        [TestMethod]
+        public void TagWithBeforeAndAfterSteps()
+        {
+            string tst = "SuiteName { \n TAG: simple { BEFORE: a1 => b1\n AFTER: a3 => b3 }\n testcase (simple) { a2 => b2 } }";
+            parser.Parse(TstTokenizer.FromContent(tst));
+            Assert.AreEqual(1, TestCases.Count);
+            Assert.AreEqual(3, TestCase.Steps.Count);
+            Assert.AreEqual("a1", TestCase.Steps[0].Action);
+            Assert.AreEqual("a2", TestCase.Steps[1].Action);
+            Assert.AreEqual("a3", TestCase.Steps[2].Action);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(UnexpectedTokenException))]
+        public void TagWithStepIsInvalid()
+        {
+            string tst = "SuiteName { \n TAG: simple { a1 => b1 }\n testcase (simple) { a2 => b2 } }";
+            parser.Parse(TstTokenizer.FromContent(tst));
+        }
+
+        [TestMethod]
+        public void CaseWithTwoTags()
+        {
+            string tst = "SuiteName { TAG: s1 { PRE: p1 } TAG: s2 { PRE: p2 } testcase (s1,s2) { a1 => b1 } }";
+            parser.Parse(TstTokenizer.FromContent(tst));
+            Assert.AreEqual(1, TestCases.Count);
+            Assert.AreEqual(2, TestCase.Preconditions.Count);
+        }
+
+        [TestMethod]
+        public void StepWithComma()
+        {
+            string tst = "suite { testcase { DESCRIPTION: something, with comma\n hi,( comma) => bcd } }";
+            parser.Parse(TstTokenizer.FromContent(tst));
+            Assert.AreEqual(1, TestCases.Count);
+            Assert.AreEqual(1, TestCase.Steps.Count);
+            Assert.AreEqual("hi,( comma)", TestCase.Steps[0].Action);
         }
     }
 }

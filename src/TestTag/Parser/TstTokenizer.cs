@@ -45,12 +45,17 @@ namespace TestTag.Parser
         {
             for (string line = reader.ReadLine(); line != null; line = reader.ReadLine())
             {
+                if (IsComment(line))
+                    continue;
                 foreach (char c in line)
                 {
                     switch (c)
                     {
-                        case '{':
+                        case '{':                        
                         case '}':
+                        case '(':
+                        case ')':
+                        case ',':
                             EndToken();
                             currentToken.Append((char)c);
                             EndToken();
@@ -70,6 +75,11 @@ namespace TestTag.Parser
             }
             EndToken();
             currentToken = null;
+        }
+
+        private bool IsComment(string line)
+        {
+            return line.Trim().StartsWith("//");
         }
 
         private void EndToken()
