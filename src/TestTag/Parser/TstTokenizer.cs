@@ -43,38 +43,42 @@ namespace TestTag.Parser
 
         private TstTokenizer(TextReader reader)
         {
-            for (string line = reader.ReadLine(); line != null; line = reader.ReadLine())
+            for (string line = reader.ReadLine(); line != null; line = reader.ReadLine(), currentLine++)
             {
-                if (IsComment(line))
-                    continue;
-                foreach (char c in line)
-                {
-                    switch (c)
-                    {
-                        case '{':                        
-                        case '}':
-                        case '(':
-                        case ')':
-                        case ',':
-                            EndToken();
-                            currentToken.Append((char)c);
-                            EndToken();
-                            break;
-                        case ' ':
-                        case '\t':
-                        case '\r':
-                            EndToken();
-                            break;
-                        default:
-                            currentToken.Append((char)c);
-                            break;
-                    }
-                }
-                EndToken();
-                tokens.Add(TstToken.LineBreak(currentLine++));
+                if (!IsComment(line))
+                    TokenizeLine(line);
             }
             EndToken();
             currentToken = null;
+        }
+
+        private void TokenizeLine(string line)
+        {
+            foreach (char c in line)
+            {
+                switch (c)
+                {
+                    case '{':
+                    case '}':
+                    case '(':
+                    case ')':
+                    case ',':
+                        EndToken();
+                        currentToken.Append((char)c);
+                        EndToken();
+                        break;
+                    case ' ':
+                    case '\t':
+                    case '\r':
+                        EndToken();
+                        break;
+                    default:
+                        currentToken.Append((char)c);
+                        break;
+                }
+            }
+            EndToken();
+            tokens.Add(TstToken.LineBreak(currentLine));
         }
 
         private bool IsComment(string line)

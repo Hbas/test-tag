@@ -133,7 +133,7 @@ namespace TestTagTests
         [TestMethod]
         public void TwoTestCasesWithEmptyLines()
         {
-            string tst = "SuiteName { \n testcase {\n a1 => b1\n\n a2 => c3 } \n\n testcase2 { a2 => b2 } }";
+            string tst = "SuiteName { \n testcase {\n a1 => b1\n\n a2 => c3 } \n\n testcase2 { a2 => b2 \n\n} }";
             parser.Parse(TstTokenizer.FromContent(tst));
             Assert.AreEqual(2, TestCases.Count);
         }
@@ -183,7 +183,7 @@ namespace TestTagTests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(UnexpectedTokenException))]
+        [ExpectedException(typeof(UnexpectedTokenException))]        
         public void TagWithStepIsInvalid()
         {
             string tst = "SuiteName { \n TAG: simple { a1 => b1 }\n testcase (simple) { a2 => b2 } }";
