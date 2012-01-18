@@ -67,9 +67,9 @@ namespace TestTag.Parser
         {
             TstTag tag = new TstTag(ConsumeStringWithoutSpecialChars());
             Consume(TstToken.OPEN_BRACKET);
+            RemoveLineBreaks();
             while (!NextTokenTypeIs(TstTokenType.CLOSE_BRACKET))
             {
-                RemoveLineBreaks();
                 if (NextTokenTypeIs(TstTokenType.TEST_PRECONDITION))
                 {
                     tokens.Next();
@@ -85,10 +85,7 @@ namespace TestTag.Parser
                     Consume(TstToken.BEFORE);
                     tag.BeforeSteps.Add(ConsumeStep());
                 }
-                if (!NextTokenTypeIs(TstTokenType.CLOSE_BRACKET))
-                {
-                    Consume(TstToken.LINE_BREAK);
-                }
+                RemoveLineBreaks();
             }
             Consume(TstToken.CLOSE_BRACKET);
             suite.AddTag(tag);
@@ -107,9 +104,9 @@ namespace TestTag.Parser
                 AddTags(tc);
             }
             Consume(TstToken.OPEN_BRACKET);
+            RemoveLineBreaks();
             while (!NextTokenTypeIs(TstTokenType.CLOSE_BRACKET))
-            {
-                RemoveLineBreaks();
+            {                
                 if (NextTokenTypeIs(TstTokenType.TEST_SUMMARY))
                 {
                     tokens.Next();
@@ -124,10 +121,7 @@ namespace TestTag.Parser
                 {
                     tc.Steps.Add(ConsumeStep());
                 }
-                if (!NextTokenTypeIs(TstTokenType.CLOSE_BRACKET))
-                {
-                    Consume(TstToken.LINE_BREAK);
-                }
+                RemoveLineBreaks();
             }
             Consume(TstToken.CLOSE_BRACKET);
             suite.AddTestCase(tc);
