@@ -82,27 +82,29 @@ namespace TestTagTests
         [TestMethod]
         public void WithOneStep()
         {
-            string tst = "suite { testcase { asd => bcd } }";
+            string tst = "suite 2 { testcase with space { asd wer => bcd } }";
             parser.Parse(TstTokenizer.FromContent(tst));
             Assert.AreEqual(1, parser.TestPlan.Suites.Count);
-            Assert.AreEqual("suite", Suite.Name);
+            Assert.AreEqual("suite 2", Suite.Name);
             Assert.AreEqual(1, TestCases.Count);
+            Assert.AreEqual("testcase with space", TestCase.Name);
 
             Assert.AreEqual(1, TestCase.Steps.Count);
-            Assert.AreEqual("asd", TestCase.Steps[0].Action);
+            Assert.AreEqual("asd wer", TestCase.Steps[0].Action);
             Assert.AreEqual("bcd", TestCase.Steps[0].ExpectedResult);
         }
 
         [TestMethod]
         public void WithLineBreak()
         {
-            string tst = "suite { testcase { asd \n Xyz => bcd } }";
+            string tst = "suite { testcase { asd\n Xyz => bcd } }";
             parser.Parse(TstTokenizer.FromContent(tst));
             Assert.AreEqual(1, TestCases.Count);
             Assert.AreEqual(1, TestCase.Steps.Count);
             Assert.AreEqual("asd\n Xyz", Step.Action);
             Assert.AreEqual("bcd", Step.ExpectedResult);
         }
+     
 
         [TestMethod]
         public void WithTwoSteps()
@@ -202,11 +204,12 @@ namespace TestTagTests
         [TestMethod]
         public void StepWithComma()
         {
-            string tst = "suite { testcase { DESCRIPTION: something, with comma\n hi,( comma) => bcd } }";
+            string tst = "suite { testcase { DESCRIPTION: something, with comma\n hi, (comma) => hello (something) } }";
             parser.Parse(TstTokenizer.FromContent(tst));
             Assert.AreEqual(1, TestCases.Count);
             Assert.AreEqual(1, TestCase.Steps.Count);
-            Assert.AreEqual("hi,( comma)", TestCase.Steps[0].Action);
+            Assert.AreEqual("hi, (comma)", TestCase.Steps[0].Action);
+            Assert.AreEqual("hello (something)", TestCase.Steps[0].ExpectedResult);
         }
     }
 }
