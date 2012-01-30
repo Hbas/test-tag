@@ -181,7 +181,7 @@ namespace TestTag.Parser
         }
 
         //TODO Refactor
-        private string ConsumeString(bool withLineBreaks, bool withComma)
+        private string ConsumeString(bool withLineBreaks, bool withPunctuation)
         {
             TstToken token = tokens.Next();
             if (token.Type != TstTokenType.TEXT)
@@ -191,20 +191,16 @@ namespace TestTag.Parser
 
             TstToken peek = tokens.Peek();
             while (peek.Type == TstTokenType.TEXT ||
-                ((peek.Type == TstTokenType.COMMA || peek.Type == TstTokenType.OPEN_PARENTHESIS || peek.Type == TstTokenType.CLOSE_PARENTHESIS) && withComma) ||
+                (peek.IsPunctuation && withPunctuation) ||
                 (peek.Type == TstTokenType.LINE_BREAK && withLineBreaks))
             {
-                TstToken token2 = tokens.Next();
-                if (token2.Type == TstTokenType.TEXT)
-                {
-                    token.Content += " ";
-                }
-                token.Content += token2.Content;
+                TstToken token2 = tokens.Next();                
+                token.Concat(token2.Content);
                 peek = tokens.Peek();
             }
             return token.Content;
         }
 
-
+        
     }
 }

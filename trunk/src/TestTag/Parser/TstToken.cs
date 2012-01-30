@@ -108,7 +108,37 @@ namespace TestTag.Parser
             return Content + "(" + Type + ")";
         }
 
+        public bool IsPunctuation
+        {
+            get
+            {
+                return Type == TstTokenType.COMMA || Type == TstTokenType.OPEN_PARENTHESIS || Type == TstTokenType.CLOSE_PARENTHESIS;
+            }
+        }
 
+        public void Concat(string content)
+        {
+            if (content.Equals(",") ||
+                content.Equals(")") ||
+                this.ContentEndsWith('(') ||
+                content.Equals("\n"))
+            {
+                this.Content += content;
+            }
+            else
+            {
+                this.Content += " " + content;
+            }
+        }
+
+
+        private bool ContentEndsWith(char c)
+        {
+            if (this.Content.Length == 0)
+                return false;
+            char lastChar = this.Content[this.Content.Length - 1];
+            return lastChar == c;
+        }
     }
 
     public enum TstTokenType
