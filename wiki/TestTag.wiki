@@ -11,7 +11,7 @@ The language was created with this things in mind:
   * *Avoid verbosity*: Test cases are really simple structures, so why fill the language with boilerplate syntax? We have curly braces and an "arrow"  (i.e. => ) as the main language elements.
   * *Based on Testlink, not restricted to*: The language was created to be used with Testlink but is not restricted to it. The language will be compiled/exported to other programs/formats in the future.
   * *Let the text editor help you*: The syntax/usage tips should be created to use the full power of the modern text editors, facilitating operations like _find and replace_ (with or without regular expressions), _column editing_, _syntax highlighting_ and _syntax folding_.
-  * *You need a suite*: All test cases should be part of a test suite. Period.
+  * *You need a suite for a test case*: All test cases should be part of a test suite. Period.
 
 = User Stories =
 
