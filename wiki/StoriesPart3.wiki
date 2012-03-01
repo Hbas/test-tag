@@ -1,7 +1,6 @@
 #summary User Stories Part 3: Other topics
-In this section we will show user stories which describes the use of Comments and multiple files with the same suite name.
 
-= Part 3: Other topics =
+= Part 3: Other topics = In this section we will show user stories which describes the use of Comments and multiple files with the same suite name.
 == Comments ==
 User stories:
    * A single line that starts with the token '//' is a comment
