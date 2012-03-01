@@ -1,6 +1,8 @@
 #summary User Stories Part 3: Other topics
 
-= Part 3: Other topics = In this section we will show user stories which describes the use of Comments and multiple files with the same suite name.
+= Part 3: Other topics = 
+In this section we will show user stories which describes the use of Comments and multiple files with the same suite name.
+
 == Comments ==
 User stories:
    * A single line that starts with the token '//' is a comment
@@ -16,11 +18,13 @@ suite name {
 }}}
 
 == Using a tag outside a suite ==
-* A tag can be outside a suite
-* A tag outside a suite can be used on any file
+User stories:
+   * A tag can be outside a suite
+   * A tag outside a suite can be used on any file
 
-Example
-file1 code:
+Example:
+
+Contents of *test1.tst*:
 {{{
 TAG: empty { }
 suite name {
@@ -30,7 +34,7 @@ suite name {
 }
 }}}
 
-file2 code:
+Contents of *test2.tst*:
 {{{
 suite2 {
    testcase (empty) {
@@ -40,10 +44,12 @@ suite2 {
 }}}
 
 == Using multiple files ==
-* If the same suite name is used in multiple files, it will be threated as the same suite
+User stories:
+   * If the same suite name is used in multiple files, it will be threated as the same suite
 
 Example:
-file1 code:
+
+Contents of *test1.tst*:
 {{{
 suite name {
    testcase1 (empty ) {
@@ -52,7 +58,7 @@ suite name {
 }
 }}}
 
-file2 code:
+Contents of *test2.tst*:
 {{{
 suite name {
    testcase2 (empty ) {
