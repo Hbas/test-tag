@@ -7,6 +7,7 @@ User stories:
    * A single line that starts with the token '//' is a comment
 
 Example:
+{{{
 suite name {
   test case name {
     //this is a single line comment
