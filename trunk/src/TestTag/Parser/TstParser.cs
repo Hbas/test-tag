@@ -38,7 +38,42 @@ namespace TestTag.Parser
         public void Parse(TstTokenizer tokenizer)
         {
             this.tokens = tokenizer;
-            TestSuite suite = new TestSuite(ConsumeString());
+
+            if (NextTokenTypeIs(TstTokenType.TAG))
+            {
+                ParseTag(tokenizer);
+            }
+            else
+            {
+                ParseSuite(tokenizer);
+            }
+        }
+
+        public void ParseTag(TstTokenizer tokenizer)
+        {
+            this.tokens = tokenizer;
+
+            while (tokens.HasMoreTokens())
+            {
+                RemoveLineBreaks();
+                if (NextTokenTypeIs(TstTokenType.TAG))
+                {
+                    tokens.Next();
+                    testPlan.AddTag(ConsumeTag());
+                }
+                else
+                {
+                    ParseSuite(tokenizer);
+                }
+                RemoveLineBreaks();
+            }
+        }
+
+        public void ParseSuite(TstTokenizer tokenizer)
+        {
+            this.tokens = tokenizer;
+            TestSuite suite = GetSuite(ConsumeString());
+            
             Consume(TstToken.OPEN_BRACKET);
             while (!NextTokenTypeIs(TstTokenType.CLOSE_BRACKET))
             {
@@ -46,7 +81,7 @@ namespace TestTag.Parser
                 if (NextTokenTypeIs(TstTokenType.TAG))
                 {
                     tokens.Next();
-                    ConsumeTag(suite);
+                    suite.AddTag(ConsumeTag());
                 }
                 else
                 {
@@ -60,10 +95,13 @@ namespace TestTag.Parser
             {
                 Consume(TstToken.EMPTY);
             }
-            testPlan.Add(suite);
+            if (!suite.IsAddedToTheTestPlan)
+            {
+                testPlan.Add(suite);
+            }
         }
 
-        private void ConsumeTag(TestSuite suite)
+        private TstTag ConsumeTag() 
         {
             TstTag tag = new TstTag(ConsumeStringWithoutSpecialChars());
             Consume(TstToken.OPEN_BRACKET);
@@ -88,7 +126,8 @@ namespace TestTag.Parser
                 RemoveLineBreaks();
             }
             Consume(TstToken.CLOSE_BRACKET);
-            suite.AddTag(tag);
+
+            return tag;
         }
 
         private bool NextTokenTypeIs(TstTokenType type)
@@ -201,6 +240,21 @@ namespace TestTag.Parser
             return token.Content;
         }
 
-        
+        private TestSuite GetSuite(string name)
+        {
+            foreach (TestSuite suite in testPlan.Suites)
+            {
+                if (suite.Name.Equals(name))
+                {
+                    suite.IsAddedToTheTestPlan = true;
+                    return suite;
+                }
+            }
+
+            TestSuite testSuite = new TestSuite(name);
+            testSuite.AddAllTags(testPlan.Tags);
+            testSuite.IsAddedToTheTestPlan = false;
+            return testSuite;
+        }        
     }
 }
