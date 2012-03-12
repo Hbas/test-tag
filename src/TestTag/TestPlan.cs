@@ -24,10 +24,12 @@ namespace TestTag
     public class TestPlan : XmlNode
     {
         public List<TestSuite> Suites { get; private set; }
+        public List<TstTag> Tags { get; private set; }
 
         public TestPlan()
         {
             Suites = new List<TestSuite>();
+            Tags = new List<TstTag>();
         }
 
         public override void AppendXml(XmlWriter writer)
@@ -46,6 +48,11 @@ namespace TestTag
         public void Add(TestSuite suite)
         {
             Suites.Add(suite);
+        }
+
+        public void AddTag(TstTag tag)
+        {
+            Tags.Add(tag);
         }
     }
 }

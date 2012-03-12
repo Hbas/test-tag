@@ -24,6 +24,7 @@ namespace TestTag
         public string Name { get; private set; }
         public List<TestCase> TestCases { get; private set; }
         public List<TstTag> Tags { get; private set; }
+        public bool IsAddedToTheTestPlan { get; set; }
 
         public TestSuite(string name)
         {
@@ -62,6 +63,12 @@ namespace TestTag
         public void AddTag(TstTag tag)
         {
             Tags.Add(tag);
+        }
+
+        public void AddAllTags(List<TstTag> tags)
+        {
+            foreach(TstTag tag in tags)
+                Tags.Add(tag);
         }
     }
 }
