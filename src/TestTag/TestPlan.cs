@@ -54,5 +54,20 @@ namespace TestTag
         {
             Tags.Add(tag);
         }
+
+        public TestSuite GetSuite(string name)
+        {
+            foreach (TestSuite suite in Suites)
+            {
+                if (suite.Name.Equals(name))
+                {
+                    return suite;
+                }
+            }
+            TestSuite testSuite = new TestSuite(name);
+            testSuite.AddAllTags(Tags);
+            Suites.Add(testSuite);
+            return testSuite;
+        }
     }
 }
