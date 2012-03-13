@@ -72,7 +72,7 @@ namespace TestTag.Parser
         public void ParseSuite(TstTokenizer tokenizer)
         {
             this.tokens = tokenizer;
-            TestSuite suite = GetSuite(ConsumeString());
+            TestSuite suite = testPlan.GetSuite(ConsumeString());
             
             Consume(TstToken.OPEN_BRACKET);
             while (!NextTokenTypeIs(TstTokenType.CLOSE_BRACKET))
@@ -94,10 +94,6 @@ namespace TestTag.Parser
             if (tokens.HasMoreTokens())
             {
                 Consume(TstToken.EMPTY);
-            }
-            if (!suite.IsAddedToTheTestPlan)
-            {
-                testPlan.Add(suite);
             }
         }
 
@@ -240,21 +236,6 @@ namespace TestTag.Parser
             return token.Content;
         }
 
-        private TestSuite GetSuite(string name)
-        {
-            foreach (TestSuite suite in testPlan.Suites)
-            {
-                if (suite.Name.Equals(name))
-                {
-                    suite.IsAddedToTheTestPlan = true;
-                    return suite;
-                }
-            }
-
-            TestSuite testSuite = new TestSuite(name);
-            testSuite.AddAllTags(testPlan.Tags);
-            testSuite.IsAddedToTheTestPlan = false;
-            return testSuite;
-        }        
+      
     }
 }
