@@ -13,39 +13,12 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
-using System.Text;
-using System.Xml;
-using System.Web;
-using System.Net;
+
 using System.Security;
+using System.Xml;
 
-namespace TestTag
-{
-    public abstract class XmlNode
-    {
-        public string Xml
-        {
-            get
-            {
-                StringBuilder sb = new StringBuilder();
-                XmlWriterSettings settings = new XmlWriterSettings()
-                {
-                    Indent = true,
-                    OmitXmlDeclaration = true
-                };
-                using (XmlWriter writer = XmlWriter.Create(sb, settings))
-                {
-                    writer.WriteStartDocument();
-                    AppendXml(writer);
-                    writer.WriteEndDocument();
-                }
-                return sb.ToString();
-            }
-        }
-
-        public abstract void AppendXml(XmlWriter writer);
-    }
-
+namespace TestTag.Output
+{  
     public static class XmlWriterExtensions
     {
         public static void WriteCdataElement(this XmlWriter writer, string tag, int cDataContents)
@@ -70,4 +43,5 @@ namespace TestTag
             writer.WriteEndElement();
         }
     }
+
 }

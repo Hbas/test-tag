@@ -65,7 +65,7 @@ namespace TestTagTests
         {
             get
             {
-                return TestCase.Steps[0];
+                return TestCase.Steps.First();
             }
         }
         #endregion
@@ -76,7 +76,7 @@ namespace TestTagTests
             string tst = "suite { testcase {  } }";
             parser.Parse(TstTokenizer.FromContent(tst));
             Assert.AreEqual(1, TestCases.Count);
-            Assert.AreEqual(0, TestCase.Steps.Count);
+            Assert.AreEqual(0, TestCase.Steps.Count());
         }
 
         [TestMethod]
@@ -89,9 +89,9 @@ namespace TestTagTests
             Assert.AreEqual(1, TestCases.Count);
             Assert.AreEqual("testcase with space", TestCase.Name);
 
-            Assert.AreEqual(1, TestCase.Steps.Count);
-            Assert.AreEqual("asd wer", TestCase.Steps[0].Action);
-            Assert.AreEqual("bcd", TestCase.Steps[0].ExpectedResult);
+            Assert.AreEqual(1, TestCase.Steps.Count());
+            Assert.AreEqual("asd wer", Step.Action);
+            Assert.AreEqual("bcd", Step.ExpectedResult);
         }
 
         [TestMethod]
@@ -100,7 +100,7 @@ namespace TestTagTests
             string tst = "suite { testcase { asd\n Xyz => bcd } }";
             parser.Parse(TstTokenizer.FromContent(tst));
             Assert.AreEqual(1, TestCases.Count);
-            Assert.AreEqual(1, TestCase.Steps.Count);
+            Assert.AreEqual(1, TestCase.Steps.Count());
             Assert.AreEqual("asd\n Xyz", Step.Action);
             Assert.AreEqual("bcd", Step.ExpectedResult);
         }
@@ -112,11 +112,11 @@ namespace TestTagTests
             string tst = "suite { testcase { a1 => b1\na2 => b2 } }";
             parser.Parse(TstTokenizer.FromContent(tst));
             Assert.AreEqual(1, TestCases.Count);
-            Assert.AreEqual(2, TestCase.Steps.Count);
+            Assert.AreEqual(2, TestCase.Steps.Count());
             Assert.AreEqual("a1", Step.Action);
             Assert.AreEqual("b1", Step.ExpectedResult);
-            Assert.AreEqual("a2", TestCase.Steps[1].Action);
-            Assert.AreEqual("b2", TestCase.Steps[1].ExpectedResult);
+            Assert.AreEqual("a2", TestCase.Steps.ElementAt(1).Action);
+            Assert.AreEqual("b2", TestCase.Steps.ElementAt(1).ExpectedResult);
         }
 
         [TestMethod]
@@ -149,9 +149,9 @@ namespace TestTagTests
             Assert.AreEqual("suite", Suite.Name);
             Assert.AreEqual(1, TestCases.Count);
 
-            Assert.AreEqual(1, TestCase.Steps.Count);
-            Assert.AreEqual("asd", TestCase.Steps[0].Action);
-            Assert.AreEqual("bcd", TestCase.Steps[0].ExpectedResult);
+            Assert.AreEqual(1, TestCase.Steps.Count());
+            Assert.AreEqual("asd", Step.Action);
+            Assert.AreEqual("bcd", Step.ExpectedResult);
         }
 
 
@@ -178,10 +178,10 @@ namespace TestTagTests
             string tst = "SuiteName { \n TAG: simple { BEFORE: a1 => b1\n AFTER: a3 => b3 }\n testcase (simple) { a2 => b2 } }";
             parser.Parse(TstTokenizer.FromContent(tst));
             Assert.AreEqual(1, TestCases.Count);
-            Assert.AreEqual(3, TestCase.Steps.Count);
-            Assert.AreEqual("a1", TestCase.Steps[0].Action);
-            Assert.AreEqual("a2", TestCase.Steps[1].Action);
-            Assert.AreEqual("a3", TestCase.Steps[2].Action);
+            Assert.AreEqual(3, TestCase.Steps.Count());
+            Assert.AreEqual("a1", Step.Action);
+            Assert.AreEqual("a2", TestCase.Steps.ElementAt(1).Action);
+            Assert.AreEqual("a3", TestCase.Steps.ElementAt(2).Action);
         }
 
         [TestMethod]
@@ -207,9 +207,9 @@ namespace TestTagTests
             string tst = "suite { testcase { DESCRIPTION: something, with comma\n hi, (comma) => hello (something) } }";
             parser.Parse(TstTokenizer.FromContent(tst));
             Assert.AreEqual(1, TestCases.Count);
-            Assert.AreEqual(1, TestCase.Steps.Count);
-            Assert.AreEqual("hi, (comma)", TestCase.Steps[0].Action);
-            Assert.AreEqual("hello (something)", TestCase.Steps[0].ExpectedResult);
+            Assert.AreEqual(1, TestCase.Steps.Count());
+            Assert.AreEqual("hi, (comma)", Step.Action);
+            Assert.AreEqual("hello (something)", Step.ExpectedResult);
         }
     }
 }

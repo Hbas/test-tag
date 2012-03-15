@@ -19,7 +19,7 @@ using System.Linq;
 
 namespace TestTag
 {
-    public class TestSuite : XmlNode
+    public class TestSuite
     {
         public string Name { get; private set; }
         public List<TestCase> TestCases { get; private set; }
@@ -32,19 +32,7 @@ namespace TestTag
             Tags = new List<TstTag>();
         }
 
-        public override void AppendXml(XmlWriter writer)
-        {            
-            writer.WriteStartElement("testsuite");
-            writer.WriteAttributeString("name", Name);
-            writer.WriteCdataElement("node_order", 1);
-            writer.WriteCdataElement("details", "");
-            foreach (var tc in TestCases)
-            {
-                tc.AppendXml(writer);
-            }
-            writer.WriteEndElement();
-        }      
-
+      
         public void AddTestCase(TestCase tc)
         {
             foreach (string tag in tc.Tags)

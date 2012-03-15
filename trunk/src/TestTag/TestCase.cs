@@ -20,7 +20,7 @@ using System.Text;
 
 namespace TestTag
 {
-    public class TestCase : XmlNode
+    public class TestCase
     {
         public int Order { get; set; }
 
@@ -29,7 +29,12 @@ namespace TestTag
 
         public List<string> Preconditions { get; private set; }
         public List<string> Tags { get; private set; }
-        public List<TestStep> Steps { get; private set; }
+        
+        private List<TestStep> steps;
+        public IEnumerable<TestStep> Steps
+        {
+            get { return steps; }
+        }
 
 
         public TestCase(string name)
@@ -42,44 +47,38 @@ namespace TestTag
         {
             Preconditions = new List<string>();
             Tags = new List<string>();
-            Steps = new List<TestStep>();
+            steps = new List<TestStep>();
             Order = 100;
         }
 
-        public override void AppendXml(XmlWriter writer)
+        public void InsertOnBeginning(IEnumerable<TestStep> steps)
         {
-            writer.WriteStartElement("testcase");
-            writer.WriteAttributeString("name", Name);
-            writer.WriteCdataElement("node_order", Order);
-            writer.WriteParagraph("summary", Summary);
-            writer.WriteCdataElement("execution_type", 1);
-            writer.WriteCdataElement("preconditions", PreconditionsXml);
-            writer.WriteStartElement("steps");
-            int stepNumber = 1;
-            foreach (TestStep step in Steps)
-            {
-                step.StepNumber = stepNumber++;
-                step.AppendXml(writer);
-            }
-            writer.WriteEndElement();
-            writer.WriteEndElement();
+            this.steps.InsertRange(0, steps);
+            UpdateStepsNumeration();
         }
 
-        private string PreconditionsXml
+        public void Add(TestStep step)
         {
-            get
+            this.steps.Add(step);
+            UpdateStepsNumeration();
+        }
+
+        public void Add(IEnumerable<TestStep> steps)
+        {
+            this.steps.AddRange(steps);
+            UpdateStepsNumeration();
+        }
+
+        private void UpdateStepsNumeration()
+        {
+            int stepNumber = 1;
+            foreach (var s in Steps)
             {
-                StringBuilder sb = new StringBuilder("<ul>");
-                foreach (string preCond in Preconditions)
-                {
-                    sb.Append("<li>");
-                    sb.Append(preCond);
-                    sb.Append("</li>");
-                }
-                sb.Append("</ul>");
-                return sb.ToString();
+                s.StepNumber = stepNumber++;
             }
         }
-       
+
+
+
     }
 }

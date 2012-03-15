@@ -20,6 +20,7 @@ using System.Text;
 using TestTag.Parser;
 using System.IO;
 using System.Xml;
+using TestTag.Output;
 
 namespace TestTag
 {
@@ -42,6 +43,11 @@ namespace TestTag
                     Console.ReadLine();
                 }
             }
+            WriteToXmlFile(parser.TestPlan);
+        }
+
+        private static void WriteToXmlFile(TestPlan plan)
+        {
             StreamWriter writer = new StreamWriter("tests.xml");
             XmlWriterSettings settings = new XmlWriterSettings()
             {
@@ -50,7 +56,8 @@ namespace TestTag
             };
             using (XmlWriter xml = XmlWriter.Create(writer, settings))
             {
-                parser.TestPlan.AppendXml(xml);
+                XmlOutputGenerator output = new XmlOutputGenerator(xml);
+                output.Write(plan);
             }
         }
     }

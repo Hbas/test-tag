@@ -21,7 +21,7 @@ using System.Xml;
 
 namespace TestTag
 {
-    public class TestPlan : XmlNode
+    public class TestPlan 
     {
         public List<TestSuite> Suites { get; private set; }
         public List<TstTag> Tags { get; private set; }
@@ -30,19 +30,6 @@ namespace TestTag
         {
             Suites = new List<TestSuite>();
             Tags = new List<TstTag>();
-        }
-
-        public override void AppendXml(XmlWriter writer)
-        {
-            writer.WriteStartElement("testsuite");
-            writer.WriteAttributeString("name", "");
-            writer.WriteCdataElement("node_order", 1);
-            writer.WriteCdataElement("details", "");
-            foreach (var suite in Suites)
-            {
-                suite.AppendXml(writer);
-            }
-            writer.WriteEndElement();
         }
 
         public void Add(TestSuite suite)
