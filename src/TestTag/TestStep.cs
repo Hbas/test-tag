@@ -17,22 +17,13 @@ using System.Xml;
 
 namespace TestTag
 {
-    public class TestStep : XmlNode
+    public class TestStep
     {
         public int StepNumber { get; set; }
         public string Action { get; set; }
         public string ExpectedResult { get; set; }
 
-        public override void AppendXml(XmlWriter writer)
-        {
-            writer.WriteStartElement("step");
-            writer.WriteCdataElement("step_number", StepNumber);
-            writer.WriteParagraph("actions", Action);
-            writer.WriteParagraph("expectedresults", ExpectedResult);
-            writer.WriteCdataElement("execution_type", 1);
-            writer.WriteEndElement();
-        }
-
+       
         public TestStep() { }
 
         public TestStep(string action, string expectedResult)

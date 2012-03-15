@@ -15,10 +15,10 @@
 //
 using System;
 using System.Text;
-using System.Collections.Generic;
-using System.Linq;
+using System.Xml;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TestTag;
+using TestTag.Output;
 
 namespace TestTagTest
 {
@@ -40,8 +40,8 @@ namespace TestTagTest
                                 "  <expectedresults><![CDATA[<p>Result number 1</p>]]></expectedresults>\r\n" +
                                 "  <execution_type><![CDATA[1]]></execution_type>\r\n" +
                                 "</step>";
-            Assert.AreEqual(expected, test.Xml);
-        }
+            AssertXmlAreEqual(expected, writer => writer.Write(test));
+        }       
 
         [TestMethod]
         public void TestCaseXml()
@@ -51,12 +51,12 @@ namespace TestTagTest
                 Name = "TestName",
                 Summary = "Some goal"
             };
-            tc.Steps.Add(new TestStep()
+            tc.Add(new TestStep()
             {
                 Action = "A1",
                 ExpectedResult = "Resultado esperado"
             });
-            tc.Steps.Add(new TestStep()
+            tc.Add(new TestStep()
             {
                 Action = "A2",
                 ExpectedResult = "Resultado esperado2"
@@ -82,7 +82,25 @@ namespace TestTagTest
                                 "    </step>\r\n" +
                                 "  </steps>\r\n" +
                                 "</testcase>";
-            Assert.AreEqual(expected, tc.Xml);
+            AssertXmlAreEqual(expected, writer => writer.Write(tc));
+        }
+
+        private void AssertXmlAreEqual(string expected, Action<XmlOutputGenerator> writeAction)
+        {
+            StringBuilder sb = new StringBuilder();
+            XmlWriterSettings settings = new XmlWriterSettings()
+            {
+                Indent = true,
+                OmitXmlDeclaration = true
+            };
+            using (XmlWriter writer = XmlWriter.Create(sb, settings))
+            {
+                writer.WriteStartDocument();
+                XmlOutputGenerator output = new XmlOutputGenerator(writer);
+                writeAction.Invoke(output);
+                writer.WriteEndDocument();
+            }
+            Assert.AreEqual(expected, sb.ToString());
         }
     }
 }

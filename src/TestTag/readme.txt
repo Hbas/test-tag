@@ -20,8 +20,13 @@ USAGE:
 
 1. Install the TestTag compiler
 2. Copy the executable file (TestTag.exe) to the directory with your test cases ("*.tst" files)
-3. Run the compiler. It will process all "tst" files and create a "tests.xml" output
+
+INTEGRATION WITH TESTLINK:
+3. Run the executable. It will process all "tst" files and create a "tests.xml" output
 4. Import the "tests.xml" as the root (blank) suite in TestLink
 
+TO GENERATE A PDF:
+3. Run the executable file passing "-pdf" as an argument. It will process all "tst" files and create a "tests.pdf" output.
+4. If you want to replace the company/project logo on the PDF, pass "-pdf -logo <replace-with-actual-image-path>" as an argument to the compiler. Valid extensions are jpg, jpeg, gif and png.
 ============================
 

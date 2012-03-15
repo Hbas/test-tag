@@ -38,8 +38,8 @@ namespace TestTag
         public void ApplyTo(TestCase tc)
         {
             tc.Preconditions.AddRange(Preconditions);
-            tc.Steps.InsertRange(0, BeforeSteps);
-            tc.Steps.AddRange(AfterSteps);
+            tc.InsertOnBeginning(BeforeSteps);
+            tc.Add(AfterSteps);
         }
     }
 }

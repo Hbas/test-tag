@@ -154,7 +154,7 @@ namespace TestTag.Parser
                 }
                 else
                 {
-                    tc.Steps.Add(ConsumeStep());
+                    tc.Add(ConsumeStep());
                 }
                 RemoveLineBreaks();
             }
