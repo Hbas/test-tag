@@ -202,6 +202,34 @@ namespace TestTagTests
         }
 
         [TestMethod]
+        public void TagOutsideSuide()
+        {
+            string tst = "TAG: logout { PRE: The user must be logged AFTER: Click on logout => The system closes the window } suite name { testcase1 (logout ) { Step => Expected result } }";
+            parser.Parse(TstTokenizer.FromContent(tst));
+            
+            Assert.AreEqual(1, TestCases.Count);
+            Assert.AreEqual(1, TestCase.Preconditions.Count);
+            Assert.AreEqual(2, TestCase.Steps.Count());
+            Assert.AreEqual("Step", TestCase.Steps.ElementAt(0).Action);
+            Assert.AreEqual("Click on logout", TestCase.Steps.ElementAt(1).Action);
+        }
+
+        [TestMethod]
+        public void MultipleFilesWithSameSuiteName()
+        {
+            string fileOneContent = "suite name { testcase1 () { Step => Expected result } }";
+            parser.Parse(TstTokenizer.FromContent(fileOneContent));
+            
+            string fileTwoContent = "suite name { testcase2 () { Step2 => Expected result2 } }";
+            parser.Parse(TstTokenizer.FromContent(fileTwoContent));
+            
+            Assert.AreEqual(2, TestCases.Count);
+            Assert.AreEqual("testcase1", TestCases.ElementAt(0).Name);
+            Assert.AreEqual("testcase2", TestCases.ElementAt(1).Name);
+            Assert.AreEqual(2, Suite.TestCases.Count);
+        }
+
+        [TestMethod]
         public void StepWithComma()
         {
             string tst = "suite { testcase { DESCRIPTION: something, with comma\n hi, (comma) => hello (something) } }";
