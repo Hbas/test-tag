@@ -227,6 +227,7 @@ namespace TestTagTests
             Assert.AreEqual("testcase1", TestCases.ElementAt(0).Name);
             Assert.AreEqual("testcase2", TestCases.ElementAt(1).Name);
             Assert.AreEqual(2, Suite.TestCases.Count);
+            Assert.AreEqual(1, parser.TestPlan.Suites.Count);
         }
 
         [TestMethod]
