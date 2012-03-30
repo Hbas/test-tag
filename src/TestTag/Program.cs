@@ -1,4 +1,4 @@
-﻿//  Copyright (C) 2012 - Henrique Borges 
+﻿//  Copyright (C) 2012 - TestTag Project
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -54,9 +54,8 @@ namespace TestTag
                 Indent = true,
                 Encoding = Encoding.UTF8
             };
-            using (XmlWriter xml = XmlWriter.Create(writer, settings))
+            using (var output = new XmlOutputGenerator(XmlWriter.Create(writer, settings)))
             {
-                XmlOutputGenerator output = new XmlOutputGenerator(xml);
                 output.Write(plan);
             }
         }

@@ -18,10 +18,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace TestTag
+namespace TestTag.PDF
 {
-    public interface ITestOutputGenerator : IDisposable
+    public class PDFOutputGenerator : ITestOutputGenerator
     {
-        void Write(TestPlan plan);
+        public void Write(TestPlan plan)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Dispose()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
