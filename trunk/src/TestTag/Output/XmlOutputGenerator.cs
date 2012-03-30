@@ -110,6 +110,7 @@ namespace TestTag.Output
             if (disposing && writer != null)
             {
                 writer.Close();
+                writer = null;
             }
         }
 
