@@ -64,6 +64,7 @@
     <Compile Include="Parser\TstParser.cs" />
     <Compile Include="Parser\TstToken.cs" />
     <Compile Include="Parser\TstTokenizer.cs" />
+    <Compile Include="PDF\PDFOutputGenerator.cs" />
     <Compile Include="TagNotFoundException.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
