@@ -1,0 +1,14 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+	<title>Test Plan</title>
+	<meta name="author" content="Test Tag HTML generator" />
+</head>
+<body>
+	<h1>Test Plan</h1>
+	<div class="suite">
+		<h2>Test suite number 1</h2>
+		
+	</div>	
+</body>
+</html>

@@ -25,6 +25,10 @@ INTEGRATION WITH TESTLINK:
 3. Run the executable. It will process all "tst" files and create a "tests.xml" output
 4. Import the "tests.xml" as the root (blank) suite in TestLink
 
+TO GENERATE A HTML:
+3. Run the executable file passing "-html" as an argument. It will process all "tst" files and create a "tests.htm" output.
+4. If you want to chance the template (for internacionalization, for example) edit the file "planTemplate.txt". On the TestTag wiki there are some sugestions.
+
 TO GENERATE A PDF:
 3. Run the executable file passing "-pdf" as an argument. It will process all "tst" files and create a "tests.pdf" output.
 4. If you want to replace the company/project logo on the PDF, pass "-pdf -logo <replace-with-actual-image-path>" as an argument to the compiler. Valid extensions are jpg, jpeg, gif and png.
