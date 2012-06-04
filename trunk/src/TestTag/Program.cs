@@ -43,21 +43,25 @@ namespace TestTag
                     Console.ReadLine();
                 }
             }
-            WriteToXmlFile(parser.TestPlan);
+            ITestOutputGenerator output;
+            if (args != null && args[0].ToLower() == "-html")
+            {
+                output = new HtmlOutputGenerator(new StreamWriter("tests.htm"));
+            }
+            else
+            {
+                StreamWriter writer = new StreamWriter("tests.xml");
+                XmlWriterSettings settings = new XmlWriterSettings()
+                {
+                    Indent = true,
+                    Encoding = Encoding.UTF8
+                };
+                output = new XmlOutputGenerator(XmlWriter.Create(writer, settings));
+            }
+            output.Write(parser.TestPlan);
+            output.Dispose();
         }
 
-        private static void WriteToXmlFile(TestPlan plan)
-        {
-            StreamWriter writer = new StreamWriter("tests.xml");
-            XmlWriterSettings settings = new XmlWriterSettings()
-            {
-                Indent = true,
-                Encoding = Encoding.UTF8
-            };
-            using (var output = new XmlOutputGenerator(XmlWriter.Create(writer, settings)))
-            {
-                output.Write(plan);
-            }
-        }
+
     }
 }
