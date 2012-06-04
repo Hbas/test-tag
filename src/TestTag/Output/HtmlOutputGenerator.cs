@@ -34,7 +34,7 @@ namespace TestTag.Output
         
         public void Write(TestPlan plan)
         {
-            StreamReader template = new StreamReader("planTemplate.htm");
+            StreamReader template = new StreamReader("planTemplate.txt");
             try
             {
                 string templateData = template.ReadToEnd();
