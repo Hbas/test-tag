@@ -46,7 +46,7 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="HtmlOutputTest.cs" />
+    <Compile Include="MetricsGeneratorTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ParserIntegrationTest.cs" />
     <Compile Include="XmlTests.cs" />

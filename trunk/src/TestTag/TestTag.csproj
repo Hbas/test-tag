@@ -66,6 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Output\HtmlOutputGenerator.cs" />
+    <Compile Include="Output\MetricsGenerator.cs" />
     <Compile Include="Output\XmlOutputGenerator.cs" />
     <Compile Include="Output\XmlWriterExtensions.cs" />
     <Compile Include="Parser\UnexpectedTokenException.cs" />
@@ -106,7 +107,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="planTemplate.txt" />
+    <Content Include="planTemplate.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="readme.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

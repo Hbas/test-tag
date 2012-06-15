@@ -44,9 +44,13 @@ namespace TestTag
                 }
             }
             ITestOutputGenerator output;
-            if (args != null && args[0].ToLower() == "-html")
+            if (args != null && args.Length > 0 && args[0].ToLower() == "-html")
             {
                 output = new HtmlOutputGenerator(new StreamWriter("tests.htm"));
+            }
+            else if (args != null && args.Length > 0 && args[0].ToLower() == "-metrics")
+            {
+                output = new MetricsGenerator(new StreamWriter("metrics.txt"));
             }
             else
             {
