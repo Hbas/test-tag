@@ -29,6 +29,7 @@ namespace TestTag
 
         public List<string> Preconditions { get; private set; }
         public List<string> Tags { get; private set; }
+        public List<string> NormalizedTags { get; private set; }
         
         private List<TestStep> steps;
         public IEnumerable<TestStep> Steps
@@ -41,12 +42,13 @@ namespace TestTag
             : this()
         {
             Name = name;
-        }
+        }      
 
         public TestCase()
         {
             Preconditions = new List<string>();
             Tags = new List<string>();
+            NormalizedTags = new List<string>();
             steps = new List<TestStep>();
             Order = 100;
         }

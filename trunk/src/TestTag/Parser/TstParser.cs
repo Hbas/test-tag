@@ -100,6 +100,10 @@ namespace TestTag.Parser
         private TstTag ConsumeTag() 
         {
             TstTag tag = new TstTag(ConsumeStringWithoutSpecialChars());
+            if (NextTokenTypeIs(TstTokenType.OPEN_PARENTHESIS))
+            {
+                AddTags(tag);
+            }
             Consume(TstToken.OPEN_BRACKET);
             RemoveLineBreaks();
             while (!NextTokenTypeIs(TstTokenType.CLOSE_BRACKET))
@@ -175,6 +179,20 @@ namespace TestTag.Parser
             while (!NextTokenTypeIs(TstTokenType.CLOSE_PARENTHESIS))
             {
                 tc.Tags.Add(ConsumeStringWithoutSpecialChars());
+                if (!NextTokenTypeIs(TstTokenType.CLOSE_PARENTHESIS))
+                {
+                    Consume(TstToken.COMMA);
+                }
+            }
+            Consume(TstToken.CLOSE_PARENTHESIS);
+        }
+
+        private void AddTags(TstTag tag)
+        {
+            Consume(TstToken.OPEN_PARENTHESIS);
+            while (!NextTokenTypeIs(TstTokenType.CLOSE_PARENTHESIS))
+            {
+                tag.Tags.Add(ConsumeStringWithoutSpecialChars());
                 if (!NextTokenTypeIs(TstTokenType.CLOSE_PARENTHESIS))
                 {
                     Consume(TstToken.COMMA);

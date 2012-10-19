@@ -35,16 +35,41 @@ namespace TestTag
       
         public void AddTestCase(TestCase tc)
         {
-            foreach (string tag in tc.Tags)
+            GetAllChildrenTags(tc, tc.Tags);
+            ApplyAll(tc, tc.NormalizedTags);
+            TestCases.Add(tc);
+        }
+
+        private void GetAllChildrenTags(TestCase tc, List<string> tags)
+        {
+            foreach (string tag in tags)
             {
-                TstTag tstTag = Tags.Where(x => x.Name == tag).FirstOrDefault();
-                if (tstTag == null)
+                TstTag tstTag = GetTag(tc.Name, tag);
+                if (!tc.NormalizedTags.Contains(tag))
                 {
-                    throw new TagNotFoundException(tc.Name,tag);
-                }
+                    tc.NormalizedTags.Add(tag);
+                    GetAllChildrenTags(tc, tstTag.Tags);                    
+                }                
+            }
+        }
+
+        private void ApplyAll(TestCase tc, List<string> tags)
+        {
+            foreach (string tag in tags)
+            {
+                TstTag tstTag = GetTag(tc.Name, tag);
                 tstTag.ApplyTo(tc);
             }
-            TestCases.Add(tc);
+        }
+
+        private TstTag GetTag(string tcName, string tag)
+        {
+            TstTag tstTag = Tags.Where(x => x.Name == tag).FirstOrDefault();
+            if (tstTag == null)
+            {
+                throw new TagNotFoundException(tcName, tag);
+            }
+            return tstTag;
         }
 
         public void AddTag(TstTag tag)

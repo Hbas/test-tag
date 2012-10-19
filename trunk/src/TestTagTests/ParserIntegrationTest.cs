@@ -193,6 +193,24 @@ namespace TestTagTests
         }
 
         [TestMethod]
+        public void TagWithTag()
+        {
+            string tst = "SuiteName { \n TAG: simple {\n PRE: precond\n }  TAG: complex (simple) {\n PRE: precond2\n } testcase (complex) { a1 => b1 } }";
+            parser.Parse(TstTokenizer.FromContent(tst));
+            Assert.AreEqual(1, TestCases.Count);
+            Assert.AreEqual(2, TestCase.Preconditions.Count);
+        }
+
+        [TestMethod]        
+        public void TagsDontLoopWeJustIgnore()
+        {
+            string tst = "SuiteName { \n TAG: simple (complex) {\n PRE: precond\n }  TAG: complex (simple) {\n PRE: precond2\n } testcase (complex) { a1 => b1 } }";
+            parser.Parse(TstTokenizer.FromContent(tst));
+            Assert.AreEqual(1, TestCases.Count);
+            Assert.AreEqual(2, TestCase.Preconditions.Count);
+        }
+
+        [TestMethod]
         public void CaseWithTwoTags()
         {
             string tst = "SuiteName { TAG: s1 { PRE: p1 } TAG: s2 { PRE: p2 } testcase (s1,s2) { a1 => b1 } }";
