@@ -25,6 +25,7 @@ namespace TestTag
     {
         public string Name { get; set; }
         public List<string> Preconditions { get; private set; }
+        public List<string> Tags { get; private set; }
         public List<TestStep> BeforeSteps = new List<TestStep>();
         public List<TestStep> AfterSteps = new List<TestStep>();
 
@@ -32,6 +33,7 @@ namespace TestTag
         {
             this.Name = name;
             Preconditions = new List<string>();
+            Tags = new List<string>();
         }
 
       
