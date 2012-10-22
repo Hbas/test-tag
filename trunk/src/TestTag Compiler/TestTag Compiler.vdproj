@@ -40,12 +40,6 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_2B52227BFDBF8ABB6E425A049C0BC0C8"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_2B31FDC8EDCD48608B33F6C1F3BD58B9"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -53,6 +47,12 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_7F91E37D59F497D4AFF5BC7C5D93231A"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_2B52227BFDBF8ABB6E425A049C0BC0C8"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -100,7 +100,7 @@
         "DisplayName" = "8:Release"
         "IsDebugOnly" = "11:FALSE"
         "IsReleaseOnly" = "11:TRUE"
-        "OutputFilename" = "8:Release\\TestTag Compiler-v1.0.0-x86.msi"
+        "OutputFilename" = "8:Release\\TestTag Compiler-v1.1.0-x86.msi"
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
@@ -279,7 +279,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:TestTag Compiler"
         "ProductCode" = "8:{0C84C673-EB03-4A3F-95F2-9F7EA57EA7E2}"
-        "PackageCode" = "8:{10D65AFD-E377-442D-9AB0-683601E6368E}"
+        "PackageCode" = "8:{DDE15573-2CFE-437C-9620-F24173EF006A}"
         "UpgradeCode" = "8:{7DB74288-9810-40EE-93CA-255BAC25DCC6}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
